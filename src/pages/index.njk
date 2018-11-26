@@ -19,4 +19,20 @@
     <p>Tell the receptionist you think it's chickenpox before going in. They may recommend a special appointment time if other patients are at risk.</p>
   </div>
 </div>
+
+{% from 'components/action-link/macro.njk' import actionLink %}
+{{ actionLink({
+  "text": "Find a minor injuries unit",
+  "href": "https://www.nhs.uk/service-search/minor-injuries-unit/locationsearch/551"
+}) }}
+
+
+{% from 'components/promo/macro.njk' import promo%}
+
+{{ promo({
+  "href": "https://www.nhs.uk",
+  "heading": "Save a life: give blood",
+  "description": "Please register today. Donating blood is easy, and saves lives."
+}) }}
+
 {% endblock content %}

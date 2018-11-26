@@ -1,0 +1,718 @@
+/* ==========================================================================
+   COMPONENTS / #HEADER
+   ========================================================================== */
+
+/**
+ * The behaviour with regards to responsiveness is as follow:
+ *
+ * - Mobile to tablet view
+ *   Menu toggle button visible and navigation links hidden, search toggle
+     button visible and search form hidden
+ *
+ * - Tablet to desktop view
+ *   Menu toggle button visible and navigation links hidden, search toggle
+ *   button hidden and search form visible
+ *
+ * - Desktop+ view
+ *   Menu toggle button hidden and navigation links visible, search toggle
+ *   button hidden and search form visible
+ *
+ * 1. Custom height and width of the logo
+ * 2. Custom height and width of form items
+ * 3. Custom height and width of svg icons
+ * 4. Remove inner border on buttons for Firefox, see
+ *    https://github.com/necolas/normalize.css/issues/393
+ * 5. Proprietary extension so form field looks the same in Safari
+ * 6. Needs !important because typeahead js adds inline styling so need to
+ *    override
+ * 7. Custom spacing to position the search icon
+ * 8. Drop shadow on search suggestions dopdown box, custom spread and blur
+ * 9. No current spacing at 12px so using this value
+ * 10. Z-index to bring the dropdown to the front
+ * 11. Custom margin to move menu toggle past the search toggle button
+ * 12. Custom border value between expanded search and expanded menu if both open at the same time
+ * 13. Don't display the link address for the logo anchor, see
+ *     core/elements/_links.scss
+ * 14. IE 10 prefix for flexbox
+ * 15. IE 9 alternative for flexbox
+ */
+
+.nhsuk-header {
+  @include clearfix();
+  background-color: $color_nhsuk-blue;
+}
+
+.nhsuk-header__logo {
+  float: left;
+  padding: $nhsuk-header-spacing;
+
+  @include mq($from: tablet) {
+    padding-left: 0;
+  }
+
+}
+
+.nhsuk-header__link {
+  display: block;
+  height: 40px; /* [1] */
+  width: 99px; /* [1] */
+
+  &:hover {
+    box-shadow: 0 0 0 $nhsuk-box-shadow-spread $color_shade_nhsuk-blue-35;
+  }
+}
+
+.nhsuk-logo {
+  border: 0;
+  height: 40px; /* [1] */
+  width: 99px; /* [1] */
+}
+
+.nhsuk-header__content {
+  @include clearfix();
+  @include print-hide();
+
+  &.js-show {
+    border-bottom: 4px solid $color_nhsuk-grey-5; /* [12] */
+  }
+
+  @include mq($from: tablet) {
+
+    float: right;
+    position: relative;
+
+    &.js-show {
+      border-bottom: 0;
+    }
+
+  }
+
+}
+
+.nhsuk-header__search {
+  @include clearfix();
+  position: relative;
+  text-align: right;
+
+  @include mq($from: tablet) {
+    float: left;
+    margin-top: $nhsuk-header-spacing;
+  }
+
+}
+
+.nhsuk-header__search-toggle {
+
+  @include toggle-button();
+
+  min-height: 40px; /* [2] */
+  padding: nhsuk-spacing(1) nhsuk-spacing(2) 0;
+  position: absolute;
+  right: nhsuk-spacing(3);
+  top: $nhsuk-header-spacing;
+
+  .nhsuk-icon__search {
+    fill: $color_nhsuk-white;
+    height: 21px; /* [3] */
+    width: 21px; /* [3] */
+  }
+
+}
+
+.nhsuk-header__search-form {
+  overflow: hidden;
+}
+
+
+@include mq($until: tablet) {
+
+  .nhsuk-header__container {
+    margin: 0;
+  }
+
+  .nhsuk-header__logo {
+    padding-left: nhsuk-spacing(3);
+    padding-right: nhsuk-spacing(3);
+    position: relative;
+    z-index: 1;
+  }
+
+  .nhsuk-header__search-wrap {
+    display: none;
+
+    &.js-show {
+      clear: both;
+      display: -ms-flexbox; /* [14] */
+      display: flex; // sass-lint:disable-line no-duplicate-properties
+      text-align: left;
+    }
+  }
+
+  .nhsuk-header__search-form {
+    background-color: $color_nhsuk-white;
+    display: -ms-flexbox; /* [14] */
+    display: flex; // sass-lint:disable-line no-duplicate-properties
+    padding: nhsuk-spacing(3);
+    width: 100%;
+  }
+
+  .nhsuk-search__input {
+    -ms-flex-positive: 2; /* [14] */
+    -webkit-appearance: listbox; // sass-lint:disable-line prefixes /* [5] */
+    background-color: $color_nhsuk-white !important; // sass-lint:disable-line no-important /* [6] */
+    border-bottom: 1px solid $color_nhsuk-grey-3;
+    border-bottom-left-radius: $nhsuk-border-radius;
+    border-bottom-right-radius: 0;
+    border-left: 1px solid $color_nhsuk-grey-3;
+    border-right: 0;
+    border-top: 1px solid $color_nhsuk-grey-3;
+    border-top-left-radius: $nhsuk-border-radius;
+    border-top-right-radius: 0;
+    flex-grow: 2;
+    font-size: inherit;
+    height: 52px; /* [2] */
+    margin: 0;
+    outline: none;
+    padding: 0 nhsuk-spacing(3);
+    width: 100%; /* [2] */
+
+    &:focus {
+      box-shadow: inset 0 0 0 $nhsuk-box-shadow-spread $nhsuk-focus-color;
+    }
+  }
+
+  .nhsuk-search__submit {
+    background-color: $color_nhsuk-green;
+    border: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: $nhsuk-border-radius;
+    border-top-left-radius: 0;
+    border-top-right-radius: $nhsuk-border-radius;
+    float: right;
+    font-size: inherit;
+    height: 52px; /* [2] */
+    line-height: inherit;
+    margin: 0;
+    outline: none;
+    padding: nhsuk-spacing(2) nhsuk-spacing(2) 0;
+
+    .nhsuk-icon__search {
+      fill: $color_nhsuk-white;
+      height: 38px; /* [3] */
+      width: 38px; /* [3] */
+    }
+
+    &::-moz-focus-inner {
+      border: 0; /* [4] */
+    }
+
+    &:hover {
+      background-color: $nhsuk-button-hover-color;
+      cursor: pointer;
+    }
+
+    &:focus {
+      box-shadow: inset 0 0 0 $nhsuk-box-shadow-spread $nhsuk-focus-color;
+    }
+
+    &:active {
+      background-color: $nhsuk-button-active-color;
+    }
+
+  }
+
+  .nhsuk-search__close {
+    @include close-button();
+    margin-left: nhsuk-spacing(3);
+    margin-top: nhsuk-spacing(2);
+  }
+
+}
+
+
+@include mq($from: tablet) {
+
+  .nhsuk-header__search-wrap {
+    display: block;
+  }
+
+  .nhsuk-header__search-toggle {
+    display: none;
+  }
+
+  .nhsuk-search__input {
+    -webkit-appearance: listbox; // sass-lint:disable-line prefixes /* [5] */
+    background-color: $color_nhsuk-white !important; // sass-lint:disable-line no-important /* [6] */
+    border: 1px solid $color_nhsuk-white;
+    border-bottom-left-radius: $nhsuk-border-radius;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: $nhsuk-border-radius;
+    border-top-right-radius: 0;
+    display: block;
+    float: left;
+    font-size: $nhsuk-base-font-size;
+    height: 40px; /* [2] */
+    padding: 0 12px; /* [9] */
+    width: 235px; /* [2] */
+
+    &:focus {
+      border: 1px solid $nhsuk-focus-color;
+      box-shadow: inset 0 0 0 ($nhsuk-box-shadow-spread - 1) $nhsuk-focus-color;
+      outline: none;
+    }
+
+    &::placeholder {
+      color: $color_nhsuk-grey-2;
+      font-size: $nhsuk-base-font-size;
+    }
+  }
+
+  .nhsuk-search__submit {
+    background-color: $color_nhsuk-grey-5;
+    border: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: $nhsuk-border-radius;
+    border-top-left-radius: 0;
+    border-top-right-radius: $nhsuk-border-radius;
+    display: block;
+    float: right;
+    font-size: inherit;
+    height: 40px; /* [2] */
+    line-height: inherit;
+    outline: none;
+    padding-left: 9px; /* [7] */
+    padding-top: 7px; /* [7] */
+    width: 44px; /* [2] */
+
+    .nhsuk-icon__search {
+      height: 27px; /* [3] */
+      width: 27px; /* [3] */
+    }
+
+    &::-moz-focus-inner { // sass-lint:disable-line no-vendor-prefixes
+      border: 0; /* [4] */
+    }
+
+    &:focus {
+      box-shadow: inset 0 0 0 $nhsuk-box-shadow-spread $nhsuk-focus-color;
+    }
+
+    &:hover {
+      background-color: $color_shade_nhsuk-blue-35;
+      cursor: pointer;
+
+      .nhsuk-icon__search {
+        fill: $color_nhsuk-white;
+      }
+    }
+
+    &:active {
+      background-color: $color_shade_nhsuk-blue-50;
+    }
+
+  }
+
+  .nhsuk-search__close {
+    display: none;
+  }
+
+}
+
+.nhsuk-search__input--withdropdown {
+  border-bottom-left-radius: 0;
+}
+
+.nhsuk-search__submit--withdropdown {
+  border-bottom-right-radius: 0;
+}
+
+
+.twitter-typeahead {
+  display: inline !important; // sass-lint:disable-line no-important /* [6] */
+  width: 100%;
+}
+
+.suggestions-list {
+  -moz-box-shadow: 0 3px 5px 0 rgba($nhsuk-box-shadow-color, $alpha-transparency-50); // sass-lint:disable-line no-vendor-prefixes, no-color-literals /* [8] */
+  -webkit-box-shadow: 0 3px 5px 0 rgba($nhsuk-box-shadow-color, $alpha-transparency-50); // sass-lint:disable-line no-vendor-prefixes, no-color-literals /* [8] */
+  background-color: $color_nhsuk-white;
+  border-bottom: 1px solid $color_nhsuk-grey-4;
+  border-bottom-left-radius: $nhsuk-border-radius;
+  border-bottom-right-radius: $nhsuk-border-radius;
+  border-left: 1px solid $color_nhsuk-grey-4;
+  border-right: 1px solid $color_nhsuk-grey-4;
+  border-top: 2px solid $color_nhsuk-blue;
+  box-shadow: 0 0 ($nhsuk-box-shadow-spread - 1) 0 rgba($nhsuk-box-shadow-color, $alpha-transparency-50); // sass-lint:disable-line no-color-literals /* [8] */
+  height: auto;
+  list-style: none;
+  margin-top: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: nhsuk-spacing(2) nhsuk-spacing(3) nhsuk-spacing(3);
+  position: absolute;
+  z-index: 1; /* [10] */
+}
+
+
+@include mq($until: tablet) {
+
+  .suggestions-menu {
+    position: relative !important; // sass-lint:disable-line no-important /* [6] */
+    top: 0 !important; // sass-lint:disable-line no-important /* [6] */
+  }
+
+  .suggestions-list {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    left: auto !important; // sass-lint:disable-line no-important /* [6] */
+    margin: 0;
+    padding-bottom: nhsuk-spacing(3);
+    position: relative !important; // sass-lint:disable-line no-important /* [6] */
+    top: auto !important; // sass-lint:disable-line no-important /* [6] */
+    width: 100% !important; // sass-lint:disable-line no-important /* [6] */
+  }
+
+}
+
+.suggestions-item {
+  border-bottom: 1px solid $color_nhsuk-grey-5;
+  color: $color_nhsuk-blue;
+  cursor: pointer;
+  font-size: $nhsuk-base-font-size;
+  font-weight: $nhsuk-font-light;
+  padding-bottom: 12px; /* [9] */
+  text-align: left;
+  text-decoration: underline;
+
+  .nhsuk-icon__search {
+    fill: $color_nhsuk-grey-3;
+    float: left;
+    height: 22px; /* [2] */
+    margin: 5px 4px 0 0; /* [7] */
+    width: 22px; /* [2] */
+  }
+
+  &:hover,
+  &:active {
+    text-decoration: none;
+  }
+
+  &:hover,
+  &:focus {
+    div {
+      background-color: $color_nhsuk-warm-yellow;
+      box-shadow: 0 0 0 $nhsuk-box-shadow-spread $color_nhsuk-warm-yellow;
+      color: $color_nhsuk-black;
+      display: inline;
+    }
+  }
+
+}
+
+.suggestions-item--selected {
+  a {
+    background-color: $color_nhsuk-warm-yellow;
+    box-shadow: 0 0 0 $nhsuk-box-shadow-spread $color_nhsuk-warm-yellow;
+    color: $color_nhsuk-black;
+    display: inline;
+    text-decoration: none;
+  }
+}
+
+.suggestions-title {
+  border-bottom: 1px solid $color_nhsuk-grey-4;
+  color: $nhsuk-text-color;
+  font-size: $nhsuk-base-font-size;
+  font-weight: $nhsuk-font-bold;
+  padding-bottom: 12px; /* [9] */
+  text-align: left;
+}
+
+.suggestions-none  {
+  font-size: $nhsuk-base-font-size;
+  line-height: $nhsuk-base-line-height;
+  margin: 0;
+  text-align: left;
+}
+
+/* Main navigation
+ *
+ * Appears below the header strip
+   ====================================================================== */
+
+.nhsuk-header__menu {
+  float: right;
+  margin: $nhsuk-header-spacing;
+
+  @include mq($from: tablet) {
+    float: left;
+    margin-right: nhsuk-spacing(3);
+  }
+}
+
+.nhsuk-header__menu-toggle {
+  @include toggle-button();
+
+  display: block;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: $nhsuk-base-line-height;
+  margin-right: 52px; /* [11] */
+  padding: 7px nhsuk-spacing(3);
+  position: relative;
+  text-decoration: none;
+  z-index: 1;
+
+  @include mq($from: tablet) {
+    margin-right: 0;
+  }
+
+}
+
+/* 'only' modifier for when there is only the menu in the header, no search
+   ====================================================================== */
+
+.nhsuk-header__menu--only {
+
+  @include mq($from: tablet) {
+    margin-right: 0;
+  }
+
+  .nhsuk-header__menu-toggle {
+    margin-right: 0;
+  }
+
+}
+
+.nhsuk-header__navigation {
+  @include print-hide();
+
+  background-color: $color_nhsuk-white;
+  clear: both;
+  display: none;
+  overflow: hidden;
+
+  &.js-show {
+    display: block;
+
+    @include mq($until: large-desktop) {
+      border-bottom: 4px solid $color_nhsuk-grey-5; /* [12] */
+    }
+  }
+
+}
+
+.nhsuk-header__navigation-title {
+  font-weight: $nhsuk-font-bold;
+  margin-bottom: 0;
+  padding: nhsuk-spacing(3);
+  position: relative;
+}
+
+.nhsuk-header__navigation-close {
+  @include close-button();
+  overflow: hidden;
+  position: absolute;
+  right: nhsuk-spacing(3);
+  top: nhsuk-spacing(2);
+  white-space: nowrap;
+}
+
+.nhsuk-header__navigation-list {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.nhsuk-header__navigation-item {
+  border-top: 1px solid $color_nhsuk-grey-5;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.nhsuk-header__navigation-link {
+  color: $color_nhsuk-blue;
+  display: block;
+  padding: nhsuk-spacing(3);
+  text-decoration: none;
+
+  .nhsuk-icon__chevron-right {
+    fill: $color_nhsuk-grey-3;
+    position: absolute;
+    right: nhsuk-spacing(1);
+    top: 11px;
+  }
+
+  &:hover {
+    background-color: $color_nhsuk-blue;
+    box-shadow: none;
+    color: $color_nhsuk-white;
+    text-decoration: underline;
+
+    .nhsuk-icon__chevron-right {
+      fill: $color_nhsuk-white;
+    }
+
+  }
+
+  &:focus {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 $nhsuk-box-shadow-spread $nhsuk-focus-color;
+    color: $color_nhsuk-blue;
+    text-decoration: underline;
+  }
+
+  &:active {
+    background-color: $color_shade_nhsuk-blue-35;
+    box-shadow: none;
+    color: $color_nhsuk-white;
+
+    .nhsuk-icon__chevron-right {
+      fill: $color_nhsuk-white;
+    }
+
+  }
+
+}
+
+/**
+ * Large desktop styles
+**/
+
+@include mq($from: large-desktop) {
+
+  .nhsuk-header__menu-toggle {
+    display: none;
+  }
+
+  .nhsuk-header__navigation-title {
+    display: none;
+  }
+
+  .nhsuk-header__navigation-item--for-mobile {
+    display: none;
+  }
+
+  .nhsuk-header__navigation {
+    background-color: $color_nhsuk-blue;
+    display: block;
+    margin: 0 auto;
+    max-width: $nhsuk-page-width;
+  }
+
+  .nhsuk-header__navigation-list {
+    border-top: 1px solid $nhsuk-secondary-border-color;
+    display: -ms-flexbox; /* [14] */
+    display: flex; // sass-lint:disable-line no-duplicate-properties
+    justify-content: space-between;
+    padding: 0;
+    width: 100%;
+  }
+
+  .nhsuk-header__navigation-item {
+    border-top: 0;
+    margin: 0;
+    text-align: center;
+
+    .nhsuk-icon__chevron-right {
+      display: none;
+    }
+  }
+
+  .nhsuk-header__navigation-link {
+    color: $color_nhsuk-white;
+    font-size: 17px;
+    line-height: normal;
+
+    &:visited {
+      color: $color_nhsuk-white;
+    }
+
+    &:hover {
+      background-color: $color_shade_nhsuk-blue-35;
+    }
+
+    &:focus {
+      color: $color_nhsuk-white;
+    }
+
+    &:active {
+      background-color: $color_shade_nhsuk-blue-50;
+      color: $color_nhsuk-grey-5;
+    }
+
+    &.is-active {
+      background-color: $color_shade_nhsuk-blue-20;
+    }
+
+  }
+
+}
+
+/**
+ * Internet Explorer >= 9 specific styles
+ *
+ * The header component is the only component that
+ * supports earlier version of IE.
+ * This is because of the NHS branding, navigation
+ * and search prominence across the website.
+**/
+
+
+.ie8 {
+
+  .nhsuk-header__menu-toggle,
+  .nhsuk-header__search-toggle,
+  .nhsuk-search__close,
+  .nhsuk-header__navigation-title,
+  .nhsuk-header__navigation-link .nhsuk-icon__chevron-right { // sass-lint:disable-line force-element-nesting
+    display: none;
+  }
+
+  .nhsuk-header__navigation-list {
+    display: table;
+  }
+
+  .nhsuk-header__navigation-item {
+    display: table-cell; /* [15] */
+  }
+
+  .nhsuk-search__submit {
+    height: auto;
+    width: auto;
+
+    .nhsuk-u-visually-hidden {
+      height: auto;
+      position: relative;
+      width: auto;
+    }
+  }
+
+  .nhsuk-header__navigation {
+    display: block;
+  }
+
+}
+
+.ie9 {
+
+  @include mq($from: large-desktop) {
+
+    .nhsuk-header__navigation-list {
+      display: table;
+    }
+
+    .nhsuk-header__navigation-item {
+      display: table-cell; /* [15] */
+    }
+
+  }
+
+  .nhsuk-header__search-wrap {
+    .js-show {
+      display: block;
+    }
+  }
+
+}

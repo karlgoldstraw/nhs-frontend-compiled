@@ -1,0 +1,126 @@
+/* ==========================================================================
+   COMPONENTS / #HERO
+   ========================================================================== */
+
+/**
+ *  Hero component shared styles.
+ *
+ * 1. Position relative to support the description
+ *    appearing over the image.
+ * 2. Adds a border between the header and hero
+ */
+
+.nhsuk-hero {
+  @include print-color($nhsuk-print-text-color);
+
+  background-color: $color_nhsuk-blue;
+  color: $color_nhsuk-white;
+  position: relative; /* [1] */
+
+  .nhsuk-hero--border { /* [2] */
+    border-top: $nhsuk-hero-border solid $nhsuk-secondary-border-color;
+  }
+
+}
+
+.nhsuk-hero__wrapper {
+  @include nhsuk-responsive-padding(8, top);
+  @include nhsuk-responsive-padding(8, bottom);
+}
+
+/**
+ *  Hero component image styles
+ *
+ * 4. Center the background image.
+ * 5. Stop the height affecting print stylesheets.
+ * 6. Darken the background image with an overlay.
+ * 7. Overlay must be 100% height to cover the image.
+ */
+
+.nhsuk-hero--image {
+  background-position: center right; /* [4] */
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  @media only screen { /* [5] */
+    height: 240px;
+  }
+
+  @include mq($from: tablet) {
+    height: 320px;
+  }
+
+  .nhsuk-hero__overlay {
+    background-color: $color_transparent_nhsuk-blue-50; /* [6] */
+    height: 100%; /* [7] */
+  }
+
+}
+
+/**
+ *  Hero component title and description styles.
+ *
+ * 8. Add a margin to support the description box
+ *    overlay and caret :after
+ * 9. Offset the description box overlay.
+ * 10. Give the description box a max width.
+ * 11. Relative position to stop description box
+ *     overlapping other content on print stylesheets.
+ * 12. Fallback for triangle on high contrast.
+ */
+
+.nhsuk-hero--image-description {
+  margin-bottom: 100px; /* [8] */
+
+  @include mq($from: tablet) {
+    margin-bottom: 72px; /* [8] */
+  }
+
+  .nhsuk-hero-content {
+    @include top-and-bottom();
+    background-color: $color_nhsuk-blue;
+    bottom: -48px; /* [9] */
+    color: $color_nhsuk-white;
+    max-width: 565px; /* [10] */
+    padding: nhsuk-spacing(5) nhsuk-spacing(6);
+    position: absolute;
+
+    @include mq($until: 375px) {
+      bottom: -40px;
+    }
+
+    @include mq($until: tablet) {
+      bottom: -72px;
+      left: nhsuk-spacing(3);
+      padding: nhsuk-spacing(4);
+      right: nhsuk-spacing(3);
+    }
+
+    @include mq($media-type: print) {
+      color: $color_nhsuk-black;
+      left: 0;
+      max-width: 100%;
+      padding: 0;
+      position: relative; /* [11] */
+    }
+
+    &:after {
+      @include print-hide();
+
+      -webkit-clip-path: polygon(0 0, 50% 100%, 100% 0); // [12] // // sass-lint:disable-line property-sort-order
+      clip-path: polygon(0 0, 50% 100%, 100% 0); // sass-lint:disable-line property-sort-order // [12] //
+      border-left: $nhsuk-hero-content-triangle-border solid transparent; // sass-lint:disable-line property-sort-order
+      border-right: $nhsuk-hero-content-triangle-border solid transparent; // sass-lint:disable-line property-sort-order
+      border-top: $nhsuk-hero-content-triangle-border solid $color_nhsuk-blue; // sass-lint:disable-line property-sort-order
+      bottom: -15px; // sass-lint:disable-line property-sort-order
+      content: '';
+      display: block;
+      height: 0;
+      position: absolute;
+      width: 0;
+
+    }
+
+  }
+
+}
