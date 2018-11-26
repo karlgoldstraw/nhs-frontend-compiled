@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--[if lt IE 9]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="en"><!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="robots" content="noindex, nofollow">
+  <title>
+  {% if title %}
+  {{ title }}. An NHS Digital prototype
+  {% else %}
+  An NHS Digital prototype
+  {% endif %}
+  </title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/nhsuk-0.1.6.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Scripts -->
+  <script src="js/nhsuk-0.1.6.min.js" defer></script>
+  <script src="js/jquery-3.3.1.min.js"></script>
+
+  <!-- Favicons -->
+  <!--[if IE]><link rel="shortcut icon" href="assets/favicons/favicon.ico"><![endif]-->
+  <link rel="apple-touch-icon" href="assets/favicons/apple-touch-icon.png">
+  <link rel="icon" href="assets/favicons/favicon.png">
+</head>
+
+<body class="{{ body_class }}">
+
+  {% include 'partials/_header.njk' %}
+
+    <div class="nhsuk-width-container">
+      <main class="nhsuk-main-wrapper" id="maincontent">
+        <div class="nhsuk-grid-row">
+          <div class="nhsuk-grid-column-three-quarters">
+            <h1>This is a title in layout</h1>
+            {% block content %}
+            {% endblock %}
+          </div>
+        </div>
+      </main>
+    </div>
+
+  {% include 'partials/_footer.njk' %}
+
+</body>
+</html>
